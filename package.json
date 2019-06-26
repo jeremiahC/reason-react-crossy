@@ -1,0 +1,12 @@
+{
+  "devDependencies": {
+    "bs-platform": "5.0.4"
+  },
+  "dependencies": {
+    "reason-react": "0.7.0"
+  },
+  "scripts": {
+    "re:build": "bsb -make-world -clean-world",
+    "re:watch": "bsb -make-world -clean-world -w"
+  }
+}
