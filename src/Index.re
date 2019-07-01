@@ -1,3 +1,10 @@
-ReactDOMRe.renderToElementWithId(<Component1 message="Hello! Click this text." />, "index1");
+module App = {
+    [@react.component]
+    let make = () => {
+        <div className="container">
+            <Land.Draw />
+        </div>
+    };
+};
 
-ReactDOMRe.renderToElementWithId(<Component2 greeting="Hello!" />, "index2");
+ReactDOMRe.renderToElementWithId(<App />, "index1");
