@@ -9,7 +9,7 @@ var Caml_builtin_exceptions = require("bs-platform/lib/js/caml_builtin_exception
 var Model$ReactHooksTemplate = require("./Model.bs.js");
 
 function Land$Draw(Props) {
-  var match = React.useReducer(Model$ReactHooksTemplate.State[/* reducer */1], Model$ReactHooksTemplate.State[/* initial_state */0]);
+  var match = React.useReducer(Model$ReactHooksTemplate.State[/* reducer */2], Model$ReactHooksTemplate.State[/* initial_state */0]);
   var dispatch = match[1];
   var state = match[0];
   var cells = function (rowGround) {

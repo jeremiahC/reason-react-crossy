@@ -2,6 +2,7 @@
 'use strict';
 
 var $$Array = require("bs-platform/lib/js/array.js");
+var Curry = require("bs-platform/lib/js/curry.js");
 var Caml_array = require("bs-platform/lib/js/caml_array.js");
 var Caml_builtin_exceptions = require("bs-platform/lib/js/caml_builtin_exceptions.js");
 
@@ -23,47 +24,91 @@ var initial_state = /* record */[
   initial_state_001
 ];
 
+function changePoint(point, axis, func) {
+  console.log(0 <= point);
+  switch (axis) {
+    case "xaxis" : 
+        if (point <= 0) {
+          return point + 1 | 0;
+        } else if (point < 8) {
+          return Curry._2(func, point, 1);
+        } else if (point === 8) {
+          return point - 1 | 0;
+        } else {
+          return Curry._2(func, point, 0);
+        }
+    case "yaxis" : 
+        if (point <= 0) {
+          return point + 1 | 0;
+        } else if (point < 14) {
+          return Curry._2(func, point, 1);
+        } else if (point === 14) {
+          return point - 1 | 0;
+        } else {
+          return Curry._2(func, point, 0);
+        }
+    default:
+      throw [
+            Caml_builtin_exceptions.match_failure,
+            /* tuple */[
+              "Model.re",
+              33,
+              8
+            ]
+          ];
+  }
+}
+
 function reducer(state, action) {
   var match = state[/* playerPosition */0];
   var x = match[1];
   var y = match[0];
-  console.log(/* tuple */[
-        y,
-        x
-      ]);
+  console.log(state[/* playerPosition */0]);
   switch (action) {
     case "down" : 
         Caml_array.caml_array_set(Caml_array.caml_array_get(state[/* ground */1], y), x, 0);
+        var y$1 = changePoint(y, "yaxis", (function (prim, prim$1) {
+                return prim + prim$1 | 0;
+              }));
         return /* record */[
                 /* playerPosition : tuple */[
-                  y + 1 | 0,
+                  y$1,
                   x
                 ],
                 /* ground */state[/* ground */1]
               ];
     case "left" : 
         Caml_array.caml_array_set(Caml_array.caml_array_get(state[/* ground */1], y), x, 0);
+        var x$1 = changePoint(x, "xaxis", (function (prim, prim$1) {
+                return prim - prim$1 | 0;
+              }));
         return /* record */[
                 /* playerPosition : tuple */[
                   y,
-                  x - 1 | 0
+                  x$1
                 ],
                 /* ground */state[/* ground */1]
               ];
     case "right" : 
         Caml_array.caml_array_set(Caml_array.caml_array_get(state[/* ground */1], y), x, 0);
+        var x$2 = changePoint(x, "xaxis", (function (prim, prim$1) {
+                return prim + prim$1 | 0;
+              }));
         return /* record */[
                 /* playerPosition : tuple */[
                   y,
-                  x + 1 | 0
+                  x$2
                 ],
                 /* ground */state[/* ground */1]
               ];
     case "up" : 
         Caml_array.caml_array_set(Caml_array.caml_array_get(state[/* ground */1], y), x, 0);
+        var y$2 = changePoint(y, "yaxis", (function (prim, prim$1) {
+                return prim - prim$1 | 0;
+              }));
         return /* record */[
                 /* playerPosition : tuple */[
-                  y - 1 | 0,
+                  y$2,
                   x
                 ],
                 /* ground */state[/* ground */1]
@@ -73,7 +118,7 @@ function reducer(state, action) {
             Caml_builtin_exceptions.match_failure,
             /* tuple */[
               "Model.re",
-              34,
+              62,
               24
             ]
           ];
@@ -82,6 +127,7 @@ function reducer(state, action) {
 
 var State = /* module */[
   /* initial_state */initial_state,
+  /* changePoint */changePoint,
   /* reducer */reducer
 ];
 
