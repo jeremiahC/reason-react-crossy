@@ -41,6 +41,11 @@ module Draw = {
             /* Js.log(e.); */
         };
 
+        React.useEffect0(() => {
+            let timerId = Js.Global.setInterval(() => dispatch("runCar"), 200);
+            Some(() => Js.Global.clearInterval(timerId))
+        });
+          
         <div className="row my-5">
             {ReasonReact.array(renderRow())}
             <div>

@@ -17,11 +17,18 @@ var initial_state_000 = /* playerPosition : tuple */[
   0
 ];
 
-var initial_state_001 = /* ground */$$Array.make_matrix(15, 9, 0);
+var initial_state_001 = /* carPost : tuple */[
+  1,
+  0
+];
+
+var initial_state_002 = /* ground */$$Array.make_matrix(15, 9, 0);
 
 var initial_state = /* record */[
   initial_state_000,
-  initial_state_001
+  initial_state_001,
+  initial_state_002,
+  /* count */0
 ];
 
 function changePoint(point, axis, func) {
@@ -52,7 +59,7 @@ function changePoint(point, axis, func) {
             Caml_builtin_exceptions.match_failure,
             /* tuple */[
               "Model.re",
-              33,
+              37,
               8
             ]
           ];
@@ -63,10 +70,11 @@ function reducer(state, action) {
   var match = state[/* playerPosition */0];
   var x = match[1];
   var y = match[0];
-  console.log(state[/* playerPosition */0]);
+  var match$1 = state[/* carPost */1];
+  var car_y = match$1[0];
   switch (action) {
     case "down" : 
-        Caml_array.caml_array_set(Caml_array.caml_array_get(state[/* ground */1], y), x, 0);
+        Caml_array.caml_array_set(Caml_array.caml_array_get(state[/* ground */2], y), x, 0);
         var y$1 = changePoint(y, "yaxis", (function (prim, prim$1) {
                 return prim + prim$1 | 0;
               }));
@@ -75,10 +83,12 @@ function reducer(state, action) {
                   y$1,
                   x
                 ],
-                /* ground */state[/* ground */1]
+                /* carPost */state[/* carPost */1],
+                /* ground */state[/* ground */2],
+                /* count */state[/* count */3]
               ];
     case "left" : 
-        Caml_array.caml_array_set(Caml_array.caml_array_get(state[/* ground */1], y), x, 0);
+        Caml_array.caml_array_set(Caml_array.caml_array_get(state[/* ground */2], y), x, 0);
         var x$1 = changePoint(x, "xaxis", (function (prim, prim$1) {
                 return prim - prim$1 | 0;
               }));
@@ -87,10 +97,12 @@ function reducer(state, action) {
                   y,
                   x$1
                 ],
-                /* ground */state[/* ground */1]
+                /* carPost */state[/* carPost */1],
+                /* ground */state[/* ground */2],
+                /* count */state[/* count */3]
               ];
     case "right" : 
-        Caml_array.caml_array_set(Caml_array.caml_array_get(state[/* ground */1], y), x, 0);
+        Caml_array.caml_array_set(Caml_array.caml_array_get(state[/* ground */2], y), x, 0);
         var x$2 = changePoint(x, "xaxis", (function (prim, prim$1) {
                 return prim + prim$1 | 0;
               }));
@@ -99,10 +111,25 @@ function reducer(state, action) {
                   y,
                   x$2
                 ],
-                /* ground */state[/* ground */1]
+                /* carPost */state[/* carPost */1],
+                /* ground */state[/* ground */2],
+                /* count */state[/* count */3]
+              ];
+    case "runCar" : 
+        var count = state[/* count */3];
+        Caml_array.caml_array_set(Caml_array.caml_array_get(state[/* ground */2], car_y), count, 2);
+        if (count !== 0) {
+          Caml_array.caml_array_set(Caml_array.caml_array_get(state[/* ground */2], car_y), count - 1 | 0, 0);
+        }
+        var match$2 = count < 8;
+        return /* record */[
+                /* playerPosition */state[/* playerPosition */0],
+                /* carPost */state[/* carPost */1],
+                /* ground */state[/* ground */2],
+                /* count */match$2 ? count + 1 | 0 : 0
               ];
     case "up" : 
-        Caml_array.caml_array_set(Caml_array.caml_array_get(state[/* ground */1], y), x, 0);
+        Caml_array.caml_array_set(Caml_array.caml_array_get(state[/* ground */2], y), x, 0);
         var y$2 = changePoint(y, "yaxis", (function (prim, prim$1) {
                 return prim - prim$1 | 0;
               }));
@@ -111,14 +138,16 @@ function reducer(state, action) {
                   y$2,
                   x
                 ],
-                /* ground */state[/* ground */1]
+                /* carPost */state[/* carPost */1],
+                /* ground */state[/* ground */2],
+                /* count */state[/* count */3]
               ];
     default:
       throw [
             Caml_builtin_exceptions.match_failure,
             /* tuple */[
               "Model.re",
-              62,
+              67,
               24
             ]
           ];

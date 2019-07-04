@@ -20,7 +20,7 @@ function Land$Draw(Props) {
                 }), rowGround);
   };
   var renderRow = function (param) {
-    var rowGrounds = state[/* ground */1];
+    var rowGrounds = state[/* ground */2];
     var match = state[/* playerPosition */0];
     Caml_array.caml_array_set(Caml_array.caml_array_get(rowGrounds, match[0]), match[1], 1);
     return $$Array.map((function (rowGround) {
@@ -53,6 +53,15 @@ function Land$Draw(Props) {
             ];
     }
   };
+  React.useEffect((function () {
+          var timerId = setInterval((function (param) {
+                  return Curry._1(dispatch, "runCar");
+                }), 200);
+          return (function (param) {
+                    clearInterval(timerId);
+                    return /* () */0;
+                  });
+        }), ([]));
   return React.createElement("div", {
               className: "row my-5"
             }, renderRow(/* () */0), React.createElement("div", undefined, React.createElement("button", {

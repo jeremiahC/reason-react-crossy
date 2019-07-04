@@ -19,12 +19,16 @@ module Car = {
 module State = {
     type t =  {
         playerPosition: (int, int),
-        ground: array(array(int))
+        carPost: (int, int),
+        ground: array(array(int)),
+        count: int
     }
 
     let initial_state = {
         playerPosition: (0, 0),
-        ground: Array.make_matrix(15, 9, 0)
+        carPost: (1, 0),
+        ground: Array.make_matrix(15, 9, 0),
+        count: 0
     }
 
 
@@ -58,7 +62,8 @@ module State = {
 
     let reducer = (state, action) => {
         let (y, x) = state.playerPosition;
-Js.log(state.playerPosition);
+        let (car_y, car_x) = state.carPost;
+
         let new_state = switch (action) {
         | "up" => {
             state.ground[y][x] = 0;
@@ -88,6 +93,20 @@ Js.log(state.playerPosition);
                 ...state,
                 playerPosition: (y, x)
             }};
+        | "runCar" => {
+            let count = state.count;
+
+            state.ground[car_y][count] = 2;
+
+            if (count != 0) {
+                state.ground[car_y][count - 1] = 0;
+                ();
+            };
+            {
+                ...state,
+                count: count < 8 ? count + 1 : 0 
+            }
+        };
         };
 
         new_state;
